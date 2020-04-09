@@ -7,6 +7,9 @@ axios.get('https://api.github.com/users/corbinrobb')
   .then( response => {
     // console.log(response.data);
     document.querySelector('.cards').appendChild(createCard(response.data));
+  })
+  .catch(err => {
+    console.log(err);
   });
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -35,15 +38,16 @@ axios.get('https://api.github.com/users/corbinrobb')
   function getFollowers() {
     axios.get('https://api.github.com/users/corbinrobb/followers')
       .then(response => {
-        return response.data.map(follower => follower.login);
-      })
-      .then(response => {
-        response.forEach(follower => {
+        const followers = response.data.map(follower => follower.login);
+        followers.forEach(follower => {
           axios.get(`https://api.github.com/users/${follower}`)
             .then(response => {
               document.querySelector('.cards').appendChild(createCard(response.data));
             })
         })
+      })
+      .catch(err => {
+        console.log(err);
       })
   }
 
